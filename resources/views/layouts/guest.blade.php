@@ -6,28 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <title>{{ config('app.name', 'REDTax Financial Services') }}</title>
+    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon" />
+    
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <link href="{{ asset('assets/bootstrap-5.3.3/css/bootstrap-zephyr.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('redtax-admin/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/guest.css') }}" rel="stylesheet">
+    
+    <script defer src="{{ asset('assets/bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}"></script>
+    <script defer src="{{ asset('assets/htmx/htmx.min.js') }}"></script>
+    
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/js/app.js'])   --}}
 </head>
-
-<body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div>
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signin w-100 m-auto">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/images/redtax-logo.png') }}" width="200" height="auto" class="img-responsive" alt="RED Tax Financial Services Logo">
+                    </a>
+                </div>
+                {{ $slot }}
+            </div>
         </div>
-
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            {{ $slot }}
-        </div>
-    </div>
+    </main>
+    <script src="{{ asset('assets/js/custom.js') }}"></script> 
 </body>
-
 </html>

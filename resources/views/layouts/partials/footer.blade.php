@@ -1,13 +1,23 @@
-    </div>
-    <!--   Core JS Files   -->
-    <script src="{{ asset('assets/admin/js/core/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/core/bootstrap.min.js') }}"></script>
+        <x-notify::notify />
+        @notifyJs
+        <script type="text/javascript" src="{{ asset('redtax-admin/js/main.js') }}"></script>
+        <script type="text/javascript">        
+            function formatPhoneNumber(event){
+                let inputElement = event.target;
+                let input = inputElement.value.replace(/\D/g, ''); // Remove all non-digit characters
 
-    <script src="{{ asset('assets/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+                if (input.length <= 3) {
+                    input = `(${input}`;
+                } else if (input.length <= 6) {
+                    input = `(${input.slice(0, 3)}) ${input.slice(3)}`;
+                } else if (input.length <= 10) {
+                    input = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6)}`;
+                } else {
+                    input = `(${input.slice(0, 3)}) ${input.slice(3, 6)}-${input.slice(6, 10)}`;
+                }
 
-    <script src="{{ asset('assets/admin/js/kaiadmin.min.js') }}"></script>
-    <script src="{{ asset('assets/js/scripts.js') }}"></script>
+                inputElement.value = input;
+            }
+        </script>
     </body>
-
-    </html>
+</html>

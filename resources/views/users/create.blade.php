@@ -1,112 +1,89 @@
 <x-app-layout>
-    <div class="page-header">
-        <h3 class="fw-bold">User Management</h3>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="{{ route('users.index') }}">
-                    <i class="icon-home"></i>
-                </a>
-            </li>
-            <li class="separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <span>Users</span>
-            </li>
-            <li class=" separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <span>Add</span>
-            </li>
-        </ul>
+    <div class="pagetitle">
+        <h1>User Management</h1>
+        <p class="text-dark"> <a href="{{ route('users.index') }}">User Accounts</a> <i class="bi bi-caret-right-fill"></i> Create</p>
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Add User</div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <form action="{{ route('users.store') }}" method="post" class="col-8 offset-r-4">
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create User</h5>
+                        
+                        <form hx-post="{{ route('users.store') }}" hx-target="body" class="col-lg-8 offset-r-4">
                             @csrf
-
-                            <div class="form-group ">
-                                <label>Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{ old('name') }}" autofocus />
+                            
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
+                                <label for="name">Name</label>
                                 @error('name')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
-
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{ old('email') }}" />
+                            
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="email" name="email" placeholder="Email" value="{{ old('email') }}">
+                                <label for="email">Email</label>
                                 @error('email')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
-
-                            <div class="form-group d-flex gap-3">
-                                <label class="fw-medium">Select a Role:</label>
-                                @forelse($roles as $role)
-                                <div class="d-flex gap-1">
-                                    <input class="form-check-input" type="checkbox" name="role_id[]" value="{{ $role->id }}" aria-label="Checkbox for Roles">
-                                    <label class="fw-medium">{{ $role->role_name }}</label>
-                                </div>
-                                @empty
-                                <span class="fw-bold">No Roles Added Yet</span>
-                                @endforelse
+                 
+                            <div class="form-floating mb-3">
+                                <select class="form-select {{ $errors->has('role') ? 'is-invalid' : '' }}" id="role" name="role">
+                                    <option value="" {{ old('role') === '' || old('role') === null ? 'selected' : '' }} >Select Role</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}" {{ (int) old('role') === $role->id ? 'selected' : '' }}>{{ $role->role_name }}</option>
+                                    @endforeach                                            
+                                </select>
+                                <label for="role">Role</label>
+                                @error('role')
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
+                                @enderror
                             </div>
-                            @error('role_id')
-                            <div class="form-group text-danger">
-                                <p class="text-md fw-medium">{{ $message }}</p>
-                            </div>
-                            @enderror
-
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" class="form-control" id="input-password" name="password" placeholder="Password" />
+                         
+                            
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="input-password" name="password" placeholder="Password">
+                                <label for="input-password">Password</label>
                                 @error('password')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
+                            
+                            <div class="form-group d-flex justify-content-end gap-1 mb-3">
+                                <a href="javascript:void(0)" class="fw-medium text-primary mx-4" onclick="generatePassword()" data-bs-toggle="tooltip" title="Generate Random Password"><i class="bi bi-key-fill"></i> Generate Password</a>
 
-                            <div class="form-group d-flex justify-content-end gap-1">
-                                <a href="javascript:void(0)" class="fw-bold text-danger mx-4" onclick="generatePassword()" data-bs-toggle="tooltip" title="Generate Random Password"><i class="fas fa-key"></i> Generate Password</a>
-
-                                <input class="form-check-input" type="checkbox" onclick="showHiddenPassword()" aria-label="Checkbox for showing Password">
-                                <label class="fw-bold">Show Password</label>
+                                <input class="form-check-input" type="checkbox" onclick="showPassword()" aria-label="Checkbox for showing Password">
+                                <label>Show Password</label>
                             </div>
-
-                            <div class="form-group">
-                                <label>Confirm Password</label>
-                                <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" />
+                            
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" id="password-confirm" name="password_confirmation" placeholder="Confirm Password">
+                                <label for="password-confirm">Confirm Password</label>
                                 @error('password_confirmation')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
 
-                            <div class="form-group d-flex gap-3">
-                                <button type="submit" class="btn btn-success">SUBMIT</button>
-                                <a href="{{ route('users.index') }}" class="btn btn-black">GO BACK</a>
+                            <div class="form-group d-flex justify-content-end gap-2">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <a href="{{ route('users.index') }}" class="btn btn-dark">Go Back</a>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>

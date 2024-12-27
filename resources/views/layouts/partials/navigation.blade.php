@@ -129,7 +129,7 @@
             <li class="nav-item topbar-user dropdown hidden-caret">
                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                     <div class="avatar-sm">
-                        <img src="{{ asset('assets/admin/img/profile.jpg') }}" alt="..." class="avatar-img rounded-circle" />
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=random" alt="user avatar" class="avatar-img rounded-circle">
                     </div>
                     <span class="profile-username">
 
@@ -141,7 +141,7 @@
                         <li>
                             <div class="user-box">
                                 <div class="avatar-lg">
-                                    <img src="{{ asset('assets/admin/img/profile.jpg') }}" alt="image profile" class="avatar-img rounded" />
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=random" alt="user avatar" class="avatar-img rounded-circle">
                                 </div>
                                 <div class="u-text">
                                     <h4>{{ auth()->user()->name }}</h4>

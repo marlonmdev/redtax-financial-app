@@ -8,8 +8,7 @@ use Laravel\Scout\Searchable;
 
 class Permission extends Model
 {
-    use Searchable;
-    use HasFactory;
+    use Searchable, HasFactory;
 
     public $timestamps = false;
 

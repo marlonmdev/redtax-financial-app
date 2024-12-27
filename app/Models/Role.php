@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Role extends Model
 {
-    use Searchable;
-    use HasFactory;
+    use Searchable, HasFactory;
 
     public $timestamps = false;
 
@@ -26,15 +25,22 @@ class Role extends Model
 
     protected $fillable = ['role_name', 'description'];
 
-    //Pivot table: user_roles
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_roles');
+        return $this->belongsToMany(User::class);
     }
 
-    //Pivot table: role_permissions
+    // Define the relationship between Role and Permissions
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'role_permissions');
+        return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id');
     }
+
+    //Pivot table: user_roles
+    // public function users()
+    // {
+    //     return $this->belongsToMany(User::class, 'user_roles');
+    // }
+
+
 }

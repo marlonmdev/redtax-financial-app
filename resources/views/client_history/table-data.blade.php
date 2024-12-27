@@ -29,7 +29,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center fw-bold">No Data Found...</td>
+                    <td colspan="5" class="text-center fw-bold">No Records Found...</td>
                 </tr>
                 @endforelse
             </tbody>

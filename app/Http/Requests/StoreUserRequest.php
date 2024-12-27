@@ -23,18 +23,15 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return  [
-            'name' => 'required|min:5',
-            'email' => 'required|email|unique:users,email',
-            'role_id' => 'required',
-            'role_id.*' => 'exists:roles,id',
-            'password' => 'required|confirmed|min:8',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'role_id.required' => 'Role is required'
+            'name' => ['required', 'min:5'],
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                Rule::unique('users', 'email')
+            ],
+            'role' => ['required'],
+            'password' => ['required', 'confirmed', 'min:8'],
         ];
     }
 }

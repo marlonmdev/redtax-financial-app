@@ -1,61 +1,42 @@
 <x-app-layout>
-    <div class="page-header">
-        <h3 class="fw-bold">User Management</h3>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="{{ route('users.index') }}">
-                    <i class="icon-home"></i>
-                </a>
-            </li>
-            <li class="separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <span>Roles</span>
-            </li>
-            <li class=" separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <span>Edit</span>
-            </li>
-        </ul>
+    <div class="pagetitle">
+        <h1>User Management</h1>
+        <p class="text-dark"> <a href="{{ route('roles.index') }}">Roles</a> <i class="bi bi-caret-right-fill"></i> Edit</p>
     </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Edit Role</div>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <form action="{{ route('roles.update', ['role' => $role->id]) }}" method="post" class="col-8 offset-r-4">
+    
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Edit Role</h5>
+                        
+                        <form hx-post="{{ route('roles.update', ['role' => $role->id]) }}" hx-target="body" class="col-lg-8 offset-r-4">
                             @csrf
                             @method('put')
-
-                            <div class="form-group ">
-                                <label>Role Name</label>
-                                <input type="text" class="form-control" name="role_name" placeholder="Enter Role Name" value="{{ old('role_name', $role->role_name) }}" autofocus />
+                            
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control {{ $errors->has('role_name') ? 'is-invalid' : '' }}" id="role-name" name="role_name" placeholder="Role Name" value="{{ old('role_name', $role->role_name) }}">
+                                <label for="role-name">Role Name</label>
                                 @error('role_name')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control text-start" name="description" wrap="physical" rows="5">
-                                {{ old('description', $role->description) }}
-                                </textarea>
+                            
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" id="description" name="description" placeholder="Description" style="height:150px;">{{ old('description', $role->description) }}</textarea>
+                                <label for="description">Description</label>
+                                
                                 @error('description')
-                                <span class="text-danger">
-                                    <p class="text-md fw-medium">{{ $message }}</p>
-                                </span>
+                                    <span class="text-danger">
+                                        <p class="text-md fw-medium">{{ $message }}</p>
+                                    </span>
                                 @enderror
                             </div>
 
-                            <div class="form-group d-flex gap-3">
+                            <div class="form-group d-flex gap-3 mb-3">
                                 <label class="fw-medium">Select Permissions:</label>
                                 @forelse($permissions as $permission)
                                 <div class="d-flex gap-1">
@@ -63,25 +44,23 @@
                                     <label class="fw-medium">{{ $permission->permission_name }}</label>
                                 </div>
                                 @empty
-                                <span class="fw-bold">No Roles Added Yet</span>
+                                <span class="fw-bold">No Permissions Added Yet</span>
                                 @endforelse
                             </div>
-                            @error('role_id')
-                            <div class="form-group text-danger">
-                                <p class="text-md fw-medium">{{ $message }}</p>
-                            </div>
+                            @error('permission_id')
+                                <div class="form-group text-danger">
+                                    <p class="text-md fw-medium">{{ $message }}</p>
+                                </div>
                             @enderror
 
-                            <div class="form-group d-flex gap-3">
-                                <button type="submit" class="btn btn-success">UPDATE</button>
-                                <a href="{{ route('roles.index') }}" class="btn btn-black">GO BACK</a>
+                            <div class="form-group d-flex justify-content-end gap-2">
+                                <button type="submit" class="btn btn-success">Update</button>
+                                <a href="{{ route('roles.index') }}" class="btn btn-dark">Go Back</a>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>

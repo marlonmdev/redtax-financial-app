@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactType;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClientRequest extends FormRequest
@@ -23,10 +26,17 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:5'],
-            'contact_details' => ['required'],
+            'customer_type' => ['required', Rule::in(['Individual', 'Business'])],
+            'company' => ['required_if:customer_type,Business'],
+            'email' => ['required', 'email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+            'phone' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            'preferred_contact' => ['required', new Enum(ContactType::class)],
             'address' => ['required'],
-            'tax_identification_number' => ['required'],
-            'segment' => ['required']
+            'city' => ['required'],
+            'state' => ['required'],
+            'zip_code' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
+            'tax_identification_number' => ['nullable'],
+            'referred_by' => ['nullable'],
         ];
     }
 }

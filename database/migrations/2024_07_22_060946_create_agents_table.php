@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('contact_details');
+            $table->string('email');
+            $table->string('phone');
             $table->string('hierarchy_level');
             $table->unsignedBigInteger('supervisor_id');
             $table->foreign('supervisor_id')->references('id')->on('agents');
+            $table->timestamps();
         });
     }
 

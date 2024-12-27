@@ -15,15 +15,7 @@ class StoreUserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_id' => 'required',
-            'role_id.*' => 'exists:roles,id',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'role_id.required' => 'Role is required'
+            'role' => 'required',
         ];
     }
 }

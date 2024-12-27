@@ -13,13 +13,24 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('customer_type', 50)->nullable();
+            $table->string('company')->nullable();
             $table->string('name');
-            $table->text('contact_details');
-            $table->text('address');
-            $table->string('tax_identification_number', 50);
-            $table->string('segment', 50);
+            $table->string('email');
+            $table->string('phone');
+            $table->string('preferred_contact');
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('tax_identification_number', 50)->nullable();
+            $table->string('referred_by')->nullable();
             $table->unsignedBigInteger('assigned_agent_id')->nullable();
             $table->foreign('assigned_agent_id')->references('id')->on('agents');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamp('added_on')->useCurrent();
+            $table->timestamp('updated_on')->useCurrent();
         });
     }
 

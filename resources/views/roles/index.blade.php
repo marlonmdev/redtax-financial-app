@@ -1,36 +1,25 @@
 <x-app-layout>
-
-    <div class="col-md-12">
-        <div class="page-header">
-            <h3 class="fw-bold">User Management</h3>
-            <ul class="breadcrumbs">
-                <li class="nav-home">
-                    <a href="{{ route('users.index') }}">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="javascript:void(0)">Roles</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <a href="{{ route('roles.create') }}" class="btn btn-secondary">Add Role</a>
-            </div>
-
-            <x-search-form :route="route('roles.index')" :search="$search"></x-search-form>
-        </div>
-
-        <div id="table-data">
-            @include('roles.table-data')
-        </div>
-
-
+    <div class="pagetitle">
+        <h1>User Management</h1>
+        <p class="text-dark"> <i class="bi bi-caret-right-fill"></i> Roles</p>
     </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-start align-items-center mb-3">
+                    <div>
+                        <a href="{{ route('roles.create') }}" class="btn btn-dark"><i class="bi bi-plus-circle me-1"></i>Create</a>
+                    </div>
+                </div>     
+        
+                <div class="card">
+                    <div class="card-body">
+                        @include('roles.table-data')
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 </x-app-layout>

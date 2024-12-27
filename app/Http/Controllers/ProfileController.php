@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -24,9 +26,27 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            $filename = $request->user()->id . '-' . uniqid() . '.jpg';
+            $imgData = Image::make($request->file('avatar'))->fit(180)->encode('jpg');
+            $imagePath = 'public/avatars/' . $filename;
+            Storage::put($imagePath, $imgData);
+
+            $oldAvatar = $request->user()->avatar;
+            if ($oldAvatar && Storage::exists('public/' . $oldAvatar)) {
+                Storage::delete('public/' . $oldAvatar);
+            }
+
+            $request->user()->avatar = 'avatars/' . $filename;
+        }
+
+        $request->user()->name = $validated['name'];
+        $request->user()->email = $validated['email'];
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

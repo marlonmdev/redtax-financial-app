@@ -4,16 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Role;
-use App\Models\UserRole;
+use App\Models\AuditLog;
 use Laravel\Scout\Searchable;
+use Kayandra\Hashidable\Hashidable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Searchable;
-    use HasFactory, Notifiable;
+    use Searchable, HasFactory, Notifiable;
 
     public function toSearchableArray()
     {
@@ -25,9 +25,16 @@ class User extends Authenticatable
     }
 
     protected $fillable = [
+        'avatar',
         'name',
         'email',
         'password',
+        'active',
+        'has_access',
+        'agreed_to_terms',
+        'agreed_on',
+        'role_id',
+        'access_granted_at'
     ];
 
     protected $hidden = [
@@ -43,9 +50,24 @@ class User extends Authenticatable
         ];
     }
 
-    //Pivot table: user_roles
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class, 'user_roles');
+        return $this->belongsTo(Role::class);
+    }
+
+    // Define a method to check if the user has a specific permission
+    public function hasPermission($permissionName)
+    {
+        return $this->role && $this->role->permissions()->where('permission_name', $permissionName)->exists();
+    }
+
+    public function audit_logs()
+    {
+        return $this->hasMany(AuditLog::class, 'user_id');
+    }
+
+    public function login_histories()
+    {
+        return $this->hasMany(LoginHistory::class, 'user_id');
     }
 }
