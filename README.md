@@ -4,4 +4,6 @@
 
 ## Below is an image from this project:
 
-[Click here to visit Live App](https://cms.redtaxfinancialservices.com/)
+![Website Homepage](https://github.com/marlonmdev/redtax-financial-app/blob/main/public/assets/images/redtax-homepage.png)
+
+[Click here to visit Live Website](https://cms.redtaxfinancialservices.com/)
